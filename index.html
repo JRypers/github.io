@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spaced Repetition Flashcard App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Spaced Repetition Flashcard App</h1>
+    </header>
+
+    <main>
+        <section id="flashcard-section">
+            <div id="flashcard">
+                <div id="question-side">
+                    <p id="question-text">Click to start</p>
+                </div>
+                <div id="answer-side" class="hidden">
+                    <p id="answer-text"></p>
+                </div>
+            </div>
+            <div id="feedback-buttons" class="hidden">
+                <p>Did you get it right?</p>
+                <button id="yes-button">Yes</button>
+                <button id="no-button">No</button>
+            </div>
+        </section>
+
+        <section id="add-question-section">
+            <h2>Add New Flashcard</h2>
+            <input type="text" id="new-question" placeholder="Enter new question">
+            <input type="text" id="new-answer" placeholder="Enter correct answer">
+            <button id="add-question">Add Flashcard</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Spaced Repetition Flashcard App</p>
+    </footer>
+</body>
+</html>
