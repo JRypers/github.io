@@ -12,7 +12,7 @@ class Flashcard {
         } else {
             this.interval = Math.max(1, Math.floor(this.interval / 2));
         }
-        this.nextReview = Date.now() + this.interval * 86400000; // Set next review time in milliseconds
+        this.nextReview = Date.now() + this.interval * 86400000;
     }
 }
 
@@ -20,20 +20,37 @@ class SpacedRepetitionApp {
     constructor() {
         this.flashcards = [];
         this.currentFlashcard = null;
-        this.loadFlashcards();
+        this.currentUser = null;
     }
 
     loadFlashcards() {
-        const savedFlashcards = localStorage.getItem('flashcards');
+        const savedFlashcards = localStorage.getItem(`flashcards_${this.currentUser}`);
         if (savedFlashcards) {
             this.flashcards = JSON.parse(savedFlashcards).map(f => 
                 new Flashcard(f.question, f.answer, f.interval, f.nextReview)
             );
+        } else {
+            // Load default flashcards for new users
+            this.flashcards = [
+                new Flashcard("Het coherentieprincipe", "Je leert beter als er geen extra zaken zijn die je afleiden. Dit betekent dat extra informatie en afbeeldingen die niet relevant zijn voor de boodschap vermeden moeten worden."),
+                new Flashcard("Het modaliteitsprincipe", "Je leert beter van beelden en gesproken woorden dan van beelden en geschreven tekst. Dit benadrukt het belang van auditieve ondersteuning bij visuele informatie."),
+                new Flashcard("Het multimediaprincipe", "Je leert beter van een combinatie van woorden en beelden dan van woorden alleen. Dit principe benadrukt het belang van visuele ondersteuning bij leren."),
+                new Flashcard("Het personalisatieprincipe", "Je leert beter als je op een informele manier wordt aangesproken in plaats van op een formele manier. Dit betekent dat een academische toon, lange zinnen of complexe bewoordingen vermeden moeten worden."),
+                new Flashcard("Het principe van redundantie", "Je leert betervan afbeeldingen en gesproken tekst dan van afbeeldingen, gesproken tekst en tekst op het scherm. Dit betekent dat overbodige informatie vermeden moet worden."),
+                new Flashcard("Het ruimtelijke nabijheidsprincipe", "Je leert beter als woorden en beelden dicht bij elkaar staan. Dit helpt om de relatie tussen de informatie te verduidelijken."),
+                new Flashcard("Het signaleringsprincipe", "Je leert beter als belangrijke zaken worden benadrukt. Dit helpt om de aandacht te vestigen op de meest relevante informatie."),
+                new Flashcard("Het stemprincipe", "Je leert beter als de stem vriendelijk en menselijk is, in plaats van een machinestem. Dit maakt de leerervaring aangenamer."),
+                new Flashcard("Het temporele nabijheidsprincipe", "Je leert beter wanneer woorden en beelden tegelijkertijd worden afgespeeld. Dit bevordert de synchronisatie van informatie."),
+                new Flashcard("Het beeldprincipe", "Je leert echt niet beter als je het gezicht van de spreker ziet. Je trekt de aandacht beter naar wat er op het scherm getoond wordt."),
+                new Flashcard("Het segmenteringsprincipe", "Je leert beter als een les is opgedeeld in kleinere delen en je zelf het tempo bepaalt."),
+                new Flashcard("Het pre-training principe", "Je leert beter als je de hoofdconcepten al kent. Op die manier kan je complexere onderwerpen en processen sneller begrijpen."),
+                // Add more default flashcards here
+            ];
         }
     }
 
     saveFlashcards() {
-        localStorage.setItem('flashcards', JSON.stringify(this.flashcards));
+        localStorage.setItem(`flashcards_${this.currentUser}`, JSON.stringify(this.flashcards));
     }
 
     addFlashcard(question, answer) {
@@ -59,13 +76,17 @@ class SpacedRepetitionApp {
     }
 }
 
-// Initialize the app
 const app = new SpacedRepetitionApp();
 
 // DOM elements
+const loginSection = document.getElementById('login-section');
+const flashcardSection = document.getElementById('flashcard-section');
+const addQuestionSection = document.getElementById('add-question-section');
+const emailInput = document.getElementById('email-input');
+const passwordInput = document.getElementById('password-input');
+const loginButton = document.getElementById('login-button');
+const loginMessage = document.getElementById('login-message');
 const flashcardElement = document.getElementById('flashcard');
-const questionSide = document.getElementById('question-side');
-const answerSide = document.getElementById('answer-side');
 const questionText = document.getElementById('question-text');
 const answerText = document.getElementById('answer-text');
 const feedbackButtons = document.getElementById('feedback-buttons');
@@ -75,7 +96,6 @@ const newQuestionInput = document.getElementById('new-question');
 const newAnswerInput = document.getElementById('new-answer');
 const addQuestionButton = document.getElementById('add-question');
 
-// Function to display the current flashcard
 function displayFlashcard() {
     const flashcard = app.getDueFlashcard();
     if (flashcard) {
@@ -84,13 +104,12 @@ function displayFlashcard() {
         flashcardElement.classList.remove('flipped');
         feedbackButtons.classList.add('hidden');
     } else {
-        questionText.textContent = 'No flashcards due at the moment. Add new flashcards or wait for the next review cycle.';
+        questionText.textContent = 'No flashcards due at the moment. Check back later!';
         answerText.textContent = '';
         feedbackButtons.classList.add('hidden');
     }
 }
 
-// Flashcard click event
 flashcardElement.addEventListener('click', () => {
     if (app.currentFlashcard) {
         flashcardElement.classList.toggle('flipped');
@@ -102,19 +121,16 @@ flashcardElement.addEventListener('click', () => {
     }
 });
 
-// Yes button click event
 yesButton.addEventListener('click', () => {
     app.processAnswer(true);
     displayFlashcard();
 });
 
-// No button click event
 noButton.addEventListener('click', () => {
     app.processAnswer(false);
     displayFlashcard();
 });
 
-// Add flashcard button click event
 addQuestionButton.addEventListener('click', () => {
     const newQuestion = newQuestionInput.value.trim();
     const newAnswer = newAnswerInput.value.trim();
@@ -128,8 +144,36 @@ addQuestionButton.addEventListener('click', () => {
     }
 });
 
-// Initial display
-displayFlashcard();
+loginButton.addEventListener('click', () => {
+    const email = emailInput.value.trim();
+    if (email === 'jan.rypers@colruytgroup.com') {
+        if (passwordInput.classList.contains('hidden')) {
+            // First click for special user, show password field
+            passwordInput.classList.remove('hidden');
+            loginMessage.textContent = 'Please enter your password.';
+        } else {
+            // Second click for special user, check password
+            if (passwordInput.value === 'Colruyt12') {
+                login(email, true);
+            } else {
+                loginMessage.textContent = 'Incorrect password';
+            }
+        }
+    } else {
+        login(email, false);
+    }
+});
+
+function login(email, isSpecialUser) {
+    app.currentUser = email;
+    app.loadFlashcards();
+    loginSection.classList.add('hidden');
+    flashcardSection.classList.remove('hidden');
+    if (isSpecialUser) {
+        addQuestionSection.classList.remove('hidden');
+    }
+    displayFlashcard();
+}
 
 // Check for due flashcards periodically
-setInterval(displayFlashcard, 60000); // Check every minute
+setInterval(displayFlashcard, 60000);
