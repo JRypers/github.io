@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spaced Repetition Flashcard App</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1>Spaced Repetition Flashcard App</h1>
-    </header>
-
     <main>
-        <section id="flashcard-section">
+        <h1>Spaced Repetition Flashcard App</h1>
+
+        <section id="login-section">
+            <h2>Login</h2>
+            <input type="email" id="email-input" placeholder="Enter your email">
+            <input type="password" id="password-input" placeholder="Password (for special user)" class="hidden">
+            <button id="login-button">Login</button>
+            <p id="login-message"></p>
+        </section>
+
+        <section id="flashcard-section" class="hidden">
             <div id="flashcard">
                 <div id="question-side">
-                    <p id="question-text">Click to start</p>
+                    <p id="question-text"></p>
                 </div>
                 <div id="answer-side" class="hidden">
                     <p id="answer-text"></p>
@@ -29,7 +34,7 @@
             </div>
         </section>
 
-        <section id="add-question-section">
+        <section id="add-question-section" class="hidden">
             <h2>Add New Flashcard</h2>
             <input type="text" id="new-question" placeholder="Enter new question">
             <input type="text" id="new-answer" placeholder="Enter correct answer">
@@ -40,5 +45,7 @@
     <footer>
         <p>&copy; 2024 Spaced Repetition Flashcard App</p>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
