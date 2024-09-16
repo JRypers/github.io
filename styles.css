@@ -1,4 +1,4 @@
-/* Basic Reset */
+/* Reset and base styles */
 * {
     margin: 0;
     padding: 0;
@@ -13,16 +13,22 @@ body {
     padding: 20px;
 }
 
-header {
-    text-align: center;
-    margin-bottom: 30px;
+/* Typography */
+h1, h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
 }
 
 h1 {
-    color: #2c3e50;
     font-size: 2.5em;
+    text-align: center;
 }
 
+h2 {
+    font-size: 1.8em;
+}
+
+/* Layout */
 main {
     max-width: 800px;
     margin: 0 auto;
@@ -36,16 +42,28 @@ section {
     margin-bottom: 30px;
 }
 
-h2 {
-    color: #2c3e50;
-    margin-bottom: 15px;
-}
-
-/* Flashcard Styles */
-#flashcard-section {
+/* Login Section */
+#login-section {
+    max-width: 300px;
+    margin: 0 auto;
     text-align: center;
 }
 
+#login-section input,
+#login-section button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#login-message {
+    color: #e74c3c;
+    margin-top: 10px;
+}
+
+/* Flashcard Section */
 #flashcard {
     width: 300px;
     height: 200px;
@@ -90,12 +108,8 @@ h2 {
 
 /* Feedback Buttons */
 #feedback-buttons {
+    text-align: center;
     margin-top: 20px;
-}
-
-#feedback-buttons p {
-    margin-bottom: 10px;
-    font-weight: bold;
 }
 
 button {
@@ -126,14 +140,14 @@ button {
     background-color: #c0392b;
 }
 
-/* Add Flashcard Section */
+/* Add Question Section */
 #add-question-section {
     background-color: #ecf0f1;
     padding: 20px;
     border-radius: 8px;
 }
 
-input[type="text"] {
+#add-question-section input[type="text"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
