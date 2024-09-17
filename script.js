@@ -50,8 +50,10 @@ class SpacedRepetitionApp {
     }
 
     saveFlashcards() {
-        localStorage.setItem(`flashcards_${this.currentUser}`, JSON.stringify(this.flashcards));
-    }
+    	localStorage.setItem(`flashcards_${this.currentUser}`, JSON.stringify(this.flashcards, (key, value) =>
+        	typeof value === 'bigint' ? value.toString() : value
+    	));
+	}
 
     addFlashcard(question, answer) {
         this.flashcards.push(new Flashcard(question, answer));
@@ -59,14 +61,19 @@ class SpacedRepetitionApp {
     }
 
     getDueFlashcard() {
-        const currentTime = Date.now();
-        const dueFlashcards = this.flashcards.filter(f => currentTime >= f.nextReview);
-        if (dueFlashcards.length > 0) {
-            this.currentFlashcard = dueFlashcards[Math.floor(Math.random() * dueFlashcards.length)];
-            return this.currentFlashcard;
-        }
-        return null;
-    }
+    	const currentTime = Date.now();
+	console.log("Current time:", new Date(currentTime));
+    	const dueFlashcards = this.flashcards.filter(f => {
+        	console.log("Flashcard:", f.question, "Next review:", new Date(f.nextReview));
+        	return currentTime >= f.nextReview;
+    	});
+    	console.log("Due flashcards:", dueFlashcards.length);
+    	if (dueFlashcards.length > 0) {
+        	this.currentFlashcard = dueFlashcards[Math.floor(Math.random() * dueFlashcards.length)];
+        	return this.currentFlashcard;
+    	}
+    	return null;
+	}
 
     processAnswer(correct) {
         if (this.currentFlashcard) {
