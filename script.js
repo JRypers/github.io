@@ -48,7 +48,7 @@ class SpacedRepetitionApp {
                 new Flashcard("Bewegen", "Bewegen zorgt voor zuurstof in het brein, waardoor je beter informatie kan opnemen."),
                 new Flashcard("Spaced Repetition", "Zonder herhaling vergeten we zeer snel wat we geleerd hebben. Met herhaling kan je die vergeetcurve afremmen en sterk verminderen."),
                 new Flashcard("Retrieval Practice", "Het effect van herhaling is nog sterker als je de deelnemer actief laat graven in diens geheugen om het geleerde te herinneren, bv. door een quiz."),
-                new Flashcard("Expanding (Spaced Repetion of Retrieval Practice)", "Elke keer je herhaalt, vertraag je de vergeetcurve. Je kan je herhaalmomenten dus steeds verder spreiden in de tijd."),
+                new Flashcard("Expanding Spaced Repetion of Retrieval Practice", "Elke keer je herhaalt, vertraag je de vergeetcurve. Je kan je herhaalmomenten dus steeds verder spreiden in de tijd."),
                 // Add more default flashcards here
             ];
         }
