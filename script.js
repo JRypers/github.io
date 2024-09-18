@@ -26,7 +26,7 @@ class SpacedRepetitionApp {
     loadFlashcards() {
         const savedFlashcards = localStorage.getItem(`flashcards_${this.currentUser}`);
         if (savedFlashcards) {
-            this.flashcards = JSON.parse(savedFlashcards).map(f => 
+            this.flashcards = JSON.parse(savedFlashcards).map(f =>
                 new Flashcard(f.question, f.answer, f.interval, f.nextReview)
             );
         } else {
@@ -55,10 +55,10 @@ class SpacedRepetitionApp {
     }
 
     saveFlashcards() {
-    	localStorage.setItem(`flashcards_${this.currentUser}`, JSON.stringify(this.flashcards, (key, value) =>
-        	typeof value === 'bigint' ? value.toString() : value
-    	));
-	}
+        localStorage.setItem(`flashcards_${this.currentUser}`, JSON.stringify(this.flashcards, (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value
+        ));
+    }
 
     addFlashcard(question, answer) {
         this.flashcards.push(new Flashcard(question, answer));
@@ -66,19 +66,19 @@ class SpacedRepetitionApp {
     }
 
     getDueFlashcard() {
-    	const currentTime = Date.now();
-	console.log("Current time:", new Date(currentTime));
-    	const dueFlashcards = this.flashcards.filter(f => {
-        	console.log("Flashcard:", f.question, "Next review:", new Date(f.nextReview));
-        	return currentTime >= f.nextReview;
-    	});
-    	console.log("Due flashcards:", dueFlashcards.length);
-    	if (dueFlashcards.length > 0) {
-        	this.currentFlashcard = dueFlashcards[Math.floor(Math.random() * dueFlashcards.length)];
-        	return this.currentFlashcard;
-    	}
-    	return null;
-	}
+        const currentTime = Date.now();
+        console.log("Current time:", new Date(currentTime));
+        const dueFlashcards = this.flashcards.filter(f => {
+            console.log("Flashcard:", f.question, "Next review:", new Date(f.nextReview));
+            return currentTime >= f.nextReview;
+        });
+        console.log("Due flashcards:", dueFlashcards.length);
+        if (dueFlashcards.length > 0) {
+            this.currentFlashcard = dueFlashcards[Math.floor(Math.random() * dueFlashcards.length)];
+            return this.currentFlashcard;
+        }
+        return null;
+    }
 
     processAnswer(correct) {
         if (this.currentFlashcard) {
@@ -88,104 +88,106 @@ class SpacedRepetitionApp {
     }
 }
 
-const app = new SpacedRepetitionApp();
+// DOM elements and event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const app = new SpacedRepetitionApp();
 
-// DOM elements
-const loginSection = document.getElementById('login-section');
-const flashcardSection = document.getElementById('flashcard-section');
-const addQuestionSection = document.getElementById('add-question-section');
-const emailInput = document.getElementById('email-input');
-const passwordInput = document.getElementById('password-input');
-const loginButton = document.getElementById('login-button');
-const loginMessage = document.getElementById('login-message');
-const flashcardElement = document.getElementById('flashcard');
-const questionText = document.getElementById('question-text');
-const answerText = document.getElementById('answer-text');
-const feedbackButtons = document.getElementById('feedback-buttons');
-const yesButton = document.getElementById('yes-button');
-const noButton = document.getElementById('no-button');
-const newQuestionInput = document.getElementById('new-question');
-const newAnswerInput = document.getElementById('new-answer');
-const addQuestionButton = document.getElementById('add-question');
+    const loginSection = document.getElementById('login-section');
+    const flashcardSection = document.getElementById('flashcard-section');
+    const addQuestionSection = document.getElementById('add-question-section');
+    const emailInput = document.getElementById('email-input');
+    const passwordInput = document.getElementById('password-input');
+    const loginButton = document.getElementById('login-button');
+    const loginMessage = document.getElementById('login-message');
+    const flashcardElement = document.getElementById('flashcard');
+    const questionText = document.getElementById('question-text');
+    const answerText = document.getElementById('answer-text');
+    const feedbackButtons = document.getElementById('feedback-buttons');
+    const yesButton = document.getElementById('yes-button');
+    const noButton = document.getElementById('no-button');
+    const newQuestionInput = document.getElementById('new-question');
+    const newAnswerInput = document.getElementById('new-answer');
+    const addQuestionButton = document.getElementById('add-question');
 
-function displayFlashcard() {
-    const flashcard = app.getDueFlashcard();
-    if (flashcard) {
-        questionText.textContent = flashcard.question;
-        answerText.textContent = flashcard.answer;
-        flashcardElement.classList.remove('flipped');
-        feedbackButtons.classList.add('hidden');
-    } else {
-        questionText.textContent = 'No flashcards due at the moment. Check back later!';
-        answerText.textContent = '';
-        feedbackButtons.classList.add('hidden');
-    }
-}
-
-flashcardElement.addEventListener('click', () => {
-    if (app.currentFlashcard) {
-        flashcardElement.classList.toggle('flipped');
-        if (flashcardElement.classList.contains('flipped')) {
-            feedbackButtons.classList.remove('hidden');
+    function displayFlashcard() {
+        const flashcard = app.getDueFlashcard();
+        if (flashcard) {
+            questionText.textContent = flashcard.question;
+            answerText.textContent = flashcard.answer;
+            flashcardElement.classList.remove('flipped');
+            feedbackButtons.classList.add('hidden');
         } else {
+            questionText.textContent = 'No flashcards due at the moment. Check back later!';
+            answerText.textContent = '';
             feedbackButtons.classList.add('hidden');
         }
     }
-});
 
-yesButton.addEventListener('click', () => {
-    app.processAnswer(true);
-    displayFlashcard();
-});
-
-noButton.addEventListener('click', () => {
-    app.processAnswer(false);
-    displayFlashcard();
-});
-
-addQuestionButton.addEventListener('click', () => {
-    const newQuestion = newQuestionInput.value.trim();
-    const newAnswer = newAnswerInput.value.trim();
-    if (newQuestion && newAnswer) {
-        app.addFlashcard(newQuestion, newAnswer);
-        newQuestionInput.value = '';
-        newAnswerInput.value = '';
-        displayFlashcard();
-    } else {
-        alert('Please enter both a question and an answer.');
-    }
-});
-
-loginButton.addEventListener('click', () => {
-    const email = emailInput.value.trim();
-    if (email === 'jan.rypers@colruytgroup.com') {
-        if (passwordInput.classList.contains('hidden')) {
-            // First click for special user, show password field
-            passwordInput.classList.remove('hidden');
-            loginMessage.textContent = 'Please enter your password.';
-        } else {
-            // Second click for special user, check password
-            if (passwordInput.value === 'Colruyt12') {
-                login(email, true);
+    flashcardElement.addEventListener('click', () => {
+        if (app.currentFlashcard) {
+            flashcardElement.classList.toggle('flipped');
+            if (flashcardElement.classList.contains('flipped')) {
+                feedbackButtons.classList.remove('hidden');
             } else {
-                loginMessage.textContent = 'Incorrect password';
+                feedbackButtons.classList.add('hidden');
             }
         }
-    } else {
-        login(email, false);
+    });
+
+    yesButton.addEventListener('click', () => {
+        app.processAnswer(true);
+        displayFlashcard();
+    });
+
+    noButton.addEventListener('click', () => {
+        app.processAnswer(false);
+        displayFlashcard();
+    });
+
+    addQuestionButton.addEventListener('click', () => {
+        const newQuestion = newQuestionInput.value.trim();
+        const newAnswer = newAnswerInput.value.trim();
+        if (newQuestion && newAnswer) {
+            app.addFlashcard(newQuestion, newAnswer);
+            newQuestionInput.value = '';
+            newAnswerInput.value = '';
+            displayFlashcard();
+        } else {
+            alert('Please enter both a question and an answer.');
+        }
+    });
+
+    loginButton.addEventListener('click', () => {
+        const email = emailInput.value.trim();
+        if (email === 'jan.rypers@colruytgroup.com') {
+            if (passwordInput.classList.contains('hidden')) {
+                // First click for special user, show password field
+                passwordInput.classList.remove('hidden');
+                loginMessage.textContent = 'Please enter your password.';
+            } else {
+                // Second click for special user, check password
+                if (passwordInput.value === 'Colruyt12') {
+                    login(email, true);
+                } else {
+                    loginMessage.textContent = 'Incorrect password';
+                }
+            }
+        } else {
+            login(email, false);
+        }
+    });
+
+    function login(email, isSpecialUser) {
+        app.currentUser = email;
+        app.loadFlashcards();
+        loginSection.classList.add('hidden');
+        flashcardSection.classList.remove('hidden');
+        if (isSpecialUser) {
+            addQuestionSection.classList.remove('hidden');
+        }
+        displayFlashcard();
     }
+
+    // Check for due flashcards periodically
+    setInterval(displayFlashcard, 60000);
 });
-
-function login(email, isSpecialUser) {
-    app.currentUser = email;
-    app.loadFlashcards();
-    loginSection.classList.add('hidden');
-    flashcardSection.classList.remove('hidden');
-    if (isSpecialUser) {
-        addQuestionSection.classList.remove('hidden');
-    }
-    displayFlashcard();
-}
-
-// Check for due flashcards periodically
-setInterval(displayFlashcard, 60000);
