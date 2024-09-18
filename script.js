@@ -33,11 +33,11 @@ class SpacedRepetitionApp {
             // Load default flashcards for new users
             this.flashcards = [
                 new Flashcard("Cognitive load theory", "In het korte-termijn geheugen past slechts een kleine hoeveelheid informatie. Je kan het geheugen dus maar beperkt belasten voor het blokkeert."),
-                new Flashcard("Het coherentieprincipe", "Je leert beter als er geen extra zaken zijn die je afleiden. Dit betekent dat extra informatie en afbeeldingen die niet relevant zijn voor de boodschap vermeden moeten worden."),
+                new Flashcard("Het coherentieprincipe", "Je leert beter als er geen extra zaken je afleiden. Vermijd extra informatie en afbeeldingen die niet relevant zijn voor de boodschap."),
                 new Flashcard("Het modaliteitsprincipe", "Je leert beter van beelden en gesproken woorden dan van beelden en geschreven tekst. Dit benadrukt het belang van auditieve ondersteuning bij visuele informatie."),
                 new Flashcard("Het multimediaprincipe", "Je leert beter van een combinatie van woorden en beelden dan van woorden alleen. Dit principe benadrukt het belang van visuele ondersteuning bij leren."),
                 new Flashcard("Het personalisatieprincipe", "Je leert beter als je op een informele manier wordt aangesproken in plaats van op een formele manier. Dit betekent dat een academische toon, lange zinnen of complexe bewoordingen vermeden moeten worden."),
-                new Flashcard("Het principe van redundantie", "Je leert beter van afbeeldingen en gesproken tekst dan van afbeeldingen, gesproken tekst en tekst op het scherm. Dit betekent dat overbodige informatie vermeden moet worden."),
+                new Flashcard("Het principe van redundantie", "Je leert beter van afbeeldingen en gesproken tekst dan van afbeeldingen, gesproken tekst en tekst op het scherm."),
                 new Flashcard("Het ruimtelijke nabijheidsprincipe", "Je leert beter als woorden en beelden dicht bij elkaar staan. Dit helpt om de relatie tussen de informatie te verduidelijken."),
                 new Flashcard("Het signaleringsprincipe", "Je leert beter als belangrijke zaken worden benadrukt. Dit helpt om de aandacht te vestigen op de meest relevante informatie."),
                 new Flashcard("Het stemprincipe", "Je leert beter als de stem vriendelijk en menselijk is, in plaats van een machinestem. Dit maakt de leerervaring aangenamer."),
