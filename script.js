@@ -8,11 +8,11 @@ class Flashcard {
 
     updateInterval(correct) {
         if (correct) {
-            this.interval *= 2;
+            this.interval *= 2; // Double the interval if correct
         } else {
-            this.interval = Math.max(1, Math.floor(this.interval / 2));
+            this.interval = Math.max(1, Math.floor(this.interval / 2)); // Halve the interval if wrong
         }
-        this.nextReview = Date.now() + this.interval * 86400000;
+        this.nextReview = Date.now() + this.interval * 86400000; // Set next review time
     }
 }
 
@@ -26,7 +26,7 @@ class SpacedRepetitionApp {
     loadFlashcards() {
         const savedFlashcards = localStorage.getItem(`flashcards_${this.currentUser}`);
         if (savedFlashcards) {
-            this.flashcards = JSON.parse(savedFlashcards).map(f =>
+            this.flashcards = JSON.parse(savedFlashcards).map(f => 
                 new Flashcard(f.question, f.answer, f.interval, f.nextReview)
             );
         } else {
@@ -55,9 +55,7 @@ class SpacedRepetitionApp {
     }
 
     saveFlashcards() {
-        localStorage.setItem(`flashcards_${this.currentUser}`, JSON.stringify(this.flashcards, (key, value) =>
-            typeof value === 'bigint' ? value.toString() : value
-        ));
+        localStorage.setItem(`flashcards_${this.currentUser}`, JSON.stringify(this.flashcards));
     }
 
     addFlashcard(question, answer) {
@@ -67,12 +65,7 @@ class SpacedRepetitionApp {
 
     getDueFlashcard() {
         const currentTime = Date.now();
-        console.log("Current time:", new Date(currentTime));
-        const dueFlashcards = this.flashcards.filter(f => {
-            console.log("Flashcard:", f.question, "Next review:", new Date(f.nextReview));
-            return currentTime >= f.nextReview;
-        });
-        console.log("Due flashcards:", dueFlashcards.length);
+        const dueFlashcards = this.flashcards.filter(f => currentTime >= f.nextReview);
         if (dueFlashcards.length > 0) {
             this.currentFlashcard = dueFlashcards[Math.floor(Math.random() * dueFlashcards.length)];
             return this.currentFlashcard;
@@ -126,11 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     flashcardElement.addEventListener('click', () => {
         if (app.currentFlashcard) {
             flashcardElement.classList.toggle('flipped');
-            if (flashcardElement.classList.contains('flipped')) {
-                feedbackButtons.classList.remove('hidden');
-            } else {
-                feedbackButtons.classList.add('hidden');
-            }
+            feedbackButtons.classList.toggle('hidden', !flashcardElement.classList.contains('flipped'));
         }
     });
 
@@ -159,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loginButton.addEventListener('click', () => {
         const email = emailInput.value.trim();
+        
         if (email === 'jan.rypers@colruytgroup.com') {
             if (passwordInput.classList.contains('hidden')) {
                 // First click for special user, show password field
@@ -180,14 +170,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function login(email, isSpecialUser) {
         app.currentUser = email;
         app.loadFlashcards();
+        
         loginSection.classList.add('hidden');
         flashcardSection.classList.remove('hidden');
+
         if (isSpecialUser) {
-            addQuestionSection.classList.remove('hidden');
+            addQuestionSection.classList.remove('hidden'); // Show add question section for special user
         }
+
         displayFlashcard();
     }
 
-    // Check for due flashcards periodically
-    setInterval(displayFlashcard, 60000);
+   // Check for due flashcards periodically
+   setInterval(displayFlashcard, 60000);
 });
