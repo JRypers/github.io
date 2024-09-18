@@ -72,6 +72,16 @@ section {
     cursor: pointer;
 }
 
+#flashcard {
+    width: 90vw; /* 90% of the viewport width */
+    height: 60vh; /* 60% of the viewport height */
+    max-width: 400px; /* Maximum width on larger screens */
+    max-height: 400px; /* Maximum height on larger screens */
+    margin: 20px auto;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
 #flashcard > div {
     position: absolute;
     width: 100%;
@@ -88,10 +98,22 @@ section {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     font-size: 1em;
-    overflow: hidden;
+    overflow: auto;
     text-overflow: ellipsis;
     white-space: normal;
     word-wrap: break-word;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+    #flashcard {
+        width: 95vw; /* Slightly wider on small screens */
+        height: 50vh; /* Slightly shorter on small screens */
+    }
+
+    #flashcard > div {
+        font-size: 0.9em; /* Slightly smaller font on small screens */
+    }
 }
 
 #answer-side {
