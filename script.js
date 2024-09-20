@@ -187,5 +187,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Check for due flashcards periodically
-    setInterval(displayFlashcard, 60000);
+    setInterval(displayFlashcard, 180000);
 });
